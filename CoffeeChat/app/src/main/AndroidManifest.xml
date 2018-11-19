@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.coffe.shentao.coffeechat">
+    //APKID 83a59aa89335c1d119b0c9dc
+    <permission android:name="com.coffe.shentao.coffeechat.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <!-- Required -->
+    <uses-permission android:name="com.coffe.shentao.coffeechat.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- Required for jmrtc -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+    <!-- Optional. Required for location feature -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <application
+        android:allowBackup="true"
+        android:name=".application.IMDebugApplication"
+        android:icon="@mipmap/chatroom"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+       >
+        <!-- Required SDK 核心功能-->
+        <!-- 可配置android:process参数将PushService放在其他进程中 -->
+        <service
+            android:name="cn.jpush.android.service.PushService"
+            android:enabled="true"
+            android:exported="false" android:process=":pushcore">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTER" />
+                <action android:name="cn.jpush.android.intent.REPORT" />
+                <action android:name="cn.jpush.android.intent.PushService" />
+                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
+
+            </intent-filter>
+        </service>
+
+        <!-- Required SDK核心功能-->
+        <receiver
+            android:name="cn.jpush.android.service.PushReceiver"
+            android:enabled="true" android:exported="false">
+            <intent-filter android:priority="1000">
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
+                <!-- Required 显示通知栏 -->
+                <category android:name="com.coffe.shentao.coffeechat" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <!-- Optional -->
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Required SDK核心功能-->
+        <receiver
+            android:name="cn.jpush.im.android.helpers.IMReceiver"
+            android:enabled="true"
+            android:exported="false"/>
+
+        <!-- Required SDK核心功能-->
+        <receiver
+            android:name="cn.jpush.android.service.AlarmReceiver"
+            android:exported="false" />
+
+
+        <!-- Required since JCore 1.1.7. SDK 核心功能-->
+        <provider
+            android:name="cn.jpush.android.service.DataProvider"
+            android:authorities="com.coffe.shentao.coffeechat.DataProvider"
+            android:exported="false" />
+
+        <!-- Required since JMessage 2.7.0 SDK 核心功能-->
+        <provider
+            android:name="cn.jpush.im.android.helpers.ipc.IMProvider"
+            android:authorities="com.coffe.shentao.coffeechat.IMProvider"
+            android:exported="false" />
+
+        <!-- Required. For publish channel feature -->
+        <!-- JPUSH_CHANNEL 是为了方便开发者统计APK分发渠道。-->
+        <!-- 例如: -->
+        <!-- 发到 Google Play 的APK可以设置为 google-play; -->
+        <!-- 发到其他市场的 APK 可以设置为 xxx-market。 -->
+        <!-- 目前这个渠道统计功能的报表还未开放。-->
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="developer-default" />
+        <!-- Required. AppKey copied from Portal -->
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="83a59aa89335c1d119b0c9dc" />
+
+        <activity
+            android:name="com.coffe.shentao.coffeechat.activity.RegisterAndLoginActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.coffe.shentao.coffeechat.activity.setting.RegisterActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.setting.SettingMainActivity" />
+        <activity
+            android:name="com.coffe.shentao.coffeechat.activity.TypeActivity"
+            android:launchMode="singleTask" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.setting.InfoActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.setting.AssertEqualsActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.setting.GetUserInfoActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.setting.UpdatePassword" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.setting.UpdateUserInfoActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.createmessage.CreateMessageActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.createmessage.CreateSigTextMessageActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.GroupInfoActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.CreateGroupActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.GetGroupInfoActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.conversation.ConversationActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.AddRemoveGroupMemberActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.UpdateGroupInfoActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.ExitGroupActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.GetLocalGroupMembersActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.createmessage.CreateGroupTextMsgActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.createmessage.CreateSigCustomMsgActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.createmessage.CreateSigImageMessageActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.createmessage.ShowMessageActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.createmessage.CreateGroupImageMsgActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.createmessage.CreateSigVoiceMsgActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.createmessage.CreateGroupCustomMsgActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.createmessage.CreateGroupVoiceMsgActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.notify.NotifyTypeActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.setting.GetBlackListActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.setting.AddRemoveBlackListActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.setting.UpdateUserAvatar" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.setting.UpdateUserExtras" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.messagecontent.SetGetStringExtraActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.messagecontent.SetGetNumberExtraActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.messagecontent.SetGetBooleanExtraActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.messagecontent.SetGetExtraActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.conversation.GetConversationInfoActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.conversation.OrderMessageActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.conversation.IsShowNotifySigActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.conversation.DeleteConversationActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.setting.NoDisturbListActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.setting.ShowLogoutReasonActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.createmessage.CreateSendFileActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.friend.FriendContactManager" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.friend.AddFriendActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.friend.ShowFriendReasonActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.createmessage.CreateLocationMessageActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.BlockedGroupMsgActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.showinfo.ShowMyInfoUpdateActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.conversation.RetractMessageActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.conversation.ForwardMessageActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.conversation.MessageReceiptActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.createmessage.CreateTransCommandActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.createmessage.ShowTransCommandActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.chatroom.ChatRoomActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.ApplyJoinGroupActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.ShowGroupApprovalActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.SetGroupMemSilenceActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.GetPublicGroupInfosActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.GroupKeeperActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.DissolveGroupActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.ChangeGroupAdminActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.jmrtc.JMRTCActivity"/>
+        <activity android:name="com.coffe.shentao.coffeechat.activity.createmessage.CreateVideoMsgActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.HandleGroupApprovalInBatchActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.GroupMemNicknameActivity" />
+        <activity android:name="com.coffe.shentao.coffeechat.activity.groupinfo.ShowMemNicknameChangedActivity" />
+    </application>
+
+</manifest>
